@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 /**
  * Implements the application's GUI.
  */
-@SuppressWarnings("serial")
 class CustomFrame extends JFrame implements ActionListener {
 
 	/**
