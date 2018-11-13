@@ -53,7 +53,7 @@ public final class Project2 {
 	 * @return Map of productions.
 	 */
 	private static Map<Character, char[]> parseRules(final String[] rules) {
-		Map<Character, char[]> parsedRules = new HashMap<Character, char[]>();
+		Map<Character, char[]> parsedRules = new HashMap<>();
 
 		for (String rule : rules) {
 			rule = rule.replaceAll("[:\\s]", "");

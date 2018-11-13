@@ -39,7 +39,7 @@ class CustomCanvas extends JPanel {
 	}
 
 	/**
-	 * Clears the canvas and redraws background and border.
+	 * This method will clear the canvas with a solid color.
 	 */
 	public final void clear() {
 		Graphics2D graphics2D = (Graphics2D) getGraphics();

@@ -72,7 +72,7 @@ class CustomFrame extends JFrame implements ActionListener {
 	 * Constructor.
 	 */
 	public CustomFrame() {
-		setTitle("");
+		setTitle("EECS2500 - Project 2 - L Systems");
 
 		initUI();
 
@@ -84,7 +84,7 @@ class CustomFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Creates the UI and all the elements inside.
+	 * Constructs and positions all the UI elements.
 	 */
 	public final void initUI() {
 		JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -100,8 +100,8 @@ class CustomFrame extends JFrame implements ActionListener {
 
 		GridBagConstraints constraints = new GridBagConstraints();
 
-		JLabel titleLabel = new JLabel("Lindenmayer");
-		JLabel examplesLabel = new JLabel("Examples");
+		JLabel titleLabel = new JLabel("L System Settings");
+		JLabel designTypeLabel = new JLabel("Design Types");
 		JLabel startLabel = new JLabel("Start");
 		JLabel rulesLabel = new JLabel("Rules");
 		JLabel iterationsLabel = new JLabel("Iterations");
@@ -109,7 +109,7 @@ class CustomFrame extends JFrame implements ActionListener {
 		JLabel lineLabel = new JLabel("Line length");
 		JLabel originLabel = new JLabel("Origin");
 
-		examplesBox = new JComboBox<String>(examples);
+		examplesBox = new JComboBox<>(examples);
 		startTextField = new JTextField();
 		// Number of rows overridden by the layout.
 		rulesTextArea = new JTextArea(4, 10);
@@ -146,7 +146,7 @@ class CustomFrame extends JFrame implements ActionListener {
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.fill = GridBagConstraints.NONE;
-		menuPanel.add(examplesLabel, constraints);
+		menuPanel.add(designTypeLabel, constraints);
 
 		constraints.gridy = 3;
 		constraints.gridwidth = 2;
