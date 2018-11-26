@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Implements simple turtle graphics.
  */
-class Turtle {
+public class Turtle {
 
 	/**
 	 * Minimum distance from the border to start drawing from.
@@ -48,17 +48,11 @@ class Turtle {
 	 * Drawing length for each line.
 	 */
 	private int lineLength;
-
 	/**
 	 * Thread for drawing.
 	 */
 	private Thread drawingThread;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param canvas Canvas to draw on.
-	 */
 	public Turtle(final CustomCanvas canvas) {
 		this.canvas = canvas;
 	}
