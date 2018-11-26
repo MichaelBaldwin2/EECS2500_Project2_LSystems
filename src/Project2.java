@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Project2 {
-	private static Turtle turtle;
+	private static LSystem system;
 
 	public static void calculateLSystem(final String start, final String[] rules, final int iterations, final int angle, final int lineLength, final int startPosition, final boolean vertical) {
 		String state = start;
@@ -17,8 +17,8 @@ public final class Project2 {
 			state = applyRules(parsedRules, state);
 		}
 
-		turtle.setProperties(state, angle, lineLength, startPosition, vertical);
-		turtle.draw(2);
+		system.setProperties(state, angle, lineLength, startPosition, vertical);
+		system.draw(2);
 	}
 
 	private static Map<Character, char[]> parseRules(final String[] rules) {
@@ -53,6 +53,6 @@ public final class Project2 {
 
 	public static void main(final String[] args) {
 		CustomFrame frame = new CustomFrame();
-		turtle = new Turtle(frame.getCanvas());
+		system = new LSystem(frame.getCanvas());
 	}
 }
