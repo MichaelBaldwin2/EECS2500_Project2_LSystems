@@ -6,10 +6,6 @@ import java.awt.geom.Line2D;
 import java.util.Stack;
 
 public class LSystem {
-	private static final int OFFSET = 10;
-	private static final int V_ANGLE = 180;
-	private static final int H_ANGLE = 90;
-
 	private SystemState currentState;
 	private Stack<SystemState> stack;
 	private CustomCanvas canvas;
@@ -27,21 +23,11 @@ public class LSystem {
 	 * @param state         System state to draw.
 	 * @param angle         Turning angle.
 	 * @param lineLength    Drawing length for each line.
-	 * @param startPosition Starting position (1 center, 2 corner, 3 bottom).
-	 * @param vertical      True if the starting angle is vertical.
 	 */
-	public final void setProperties(final String state, final int angle, final int lineLength, final int startPosition, final boolean vertical) {
+	public final void setProperties(final String state, final int angle, final int lineLength) {
 		double canvasWidth = canvas.getSize().width - canvas.getInsets().left - canvas.getInsets().right;
 		double canvasHeight = canvas.getSize().height - canvas.getInsets().bottom - canvas.getInsets().top;
-		int startAngle = vertical ? V_ANGLE : H_ANGLE;
-
-		if (startPosition == 1) // Center
-			this.currentState = new SystemState(canvasWidth / 2, canvasHeight / 2, startAngle);
-		else if (startPosition == 2) // Corner
-			this.currentState = new SystemState(OFFSET, canvasHeight + canvas.getInsets().bottom - OFFSET, startAngle);
-		else
-			// Bottom
-			this.currentState = new SystemState(canvasWidth / 2, canvasHeight + canvas.getInsets().bottom - OFFSET, startAngle);
+		currentState = new SystemState(canvasWidth / 2, canvasHeight / 2, 180);
 
 		this.stack = new Stack<>();
 		this.state = state;

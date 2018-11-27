@@ -95,7 +95,7 @@ public class CustomFrame extends JFrame implements ActionListener {
 			int angle = Integer.parseInt(angleTextField.getText());
 
 			int startPosition = 1;
-			Project2.calculateLSystem(start, rules, iterations, angle, 5, startPosition, false);
+			Project2.calculateLSystem(start, rules, iterations, angle, 5);
 
 		} catch (NumberFormatException exception) {
 			JOptionPane.showMessageDialog(canvasPanel, "Incorrect Input.", "Error", JOptionPane.ERROR_MESSAGE);
