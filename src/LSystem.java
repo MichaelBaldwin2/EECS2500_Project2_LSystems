@@ -12,6 +12,7 @@ public class LSystem {
 	private String state;
 	private int angle;
 	private int lineLength;
+	private boolean instantDraw;
 
 	public LSystem(final CustomCanvas canvas) {
 		this.canvas = canvas;
@@ -20,14 +21,15 @@ public class LSystem {
 	/**
 	 * Changes the properties, used to start a new drawing.
 	 *
-	 * @param state         System state to draw.
-	 * @param angle         Turning angle.
-	 * @param lineLength    Drawing length for each line.
+	 * @param state      System state to draw.
+	 * @param angle      Turning angle.
+	 * @param lineLength Drawing length for each line.
 	 */
-	public final void setProperties(final String state, final int angle, final int lineLength) {
+	public final void setProperties(final String state, final int angle, final int lineLength, boolean instantDraw) {
 		double canvasWidth = canvas.getSize().width - canvas.getInsets().left - canvas.getInsets().right;
 		double canvasHeight = canvas.getSize().height - canvas.getInsets().bottom - canvas.getInsets().top;
 		currentState = new SystemState(canvasWidth / 2, canvasHeight / 2, 180);
+		this.instantDraw = instantDraw;
 
 		this.stack = new Stack<>();
 		this.state = state;
@@ -44,16 +46,11 @@ public class LSystem {
 		canvas.clear();
 
 		for (char item : state.toCharArray()) {
-			if (item == 'F' || item == 'G') {
+			if (item == 'F') {
 				double nextX = currentState.x + (lineLength * Math.sin(Math.toRadians(currentState.angle)));
 				double nextY = currentState.y + (lineLength * Math.cos(Math.toRadians(currentState.angle)));
 				canvas.addLine(new Line2D.Double(currentState.x, currentState.y, nextX, nextY));
 				currentState = new SystemState(nextX, nextY, currentState.angle);
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			} else if (item == '+') {
 				int nextAngle = currentState.angle + angle;
 				currentState = new SystemState(currentState.x, currentState.y, nextAngle);
@@ -66,8 +63,9 @@ public class LSystem {
 				if (!stack.isEmpty()) currentState = stack.pop();
 			}
 
-			canvas.draw();
+			if (!instantDraw) canvas.draw();
 		}
+		if (instantDraw) canvas.draw();
 	}
 
 	private final class SystemState {

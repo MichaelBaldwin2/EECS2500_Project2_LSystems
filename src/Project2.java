@@ -9,7 +9,7 @@ import java.util.Map;
 public final class Project2 {
 	private static LSystem system;
 
-	public static void calculateLSystem(final String start, final String[] rules, final int iterations, final int angle, final int lineLength) {
+	public static void calculateLSystem(final String start, final String[] rules, final int iterations, final int angle, final int lineLength, boolean instantDraw) {
 		String state = start;
 		Map<Character, char[]> parsedRules = parseRules(rules);
 
@@ -17,7 +17,7 @@ public final class Project2 {
 			state = applyRules(parsedRules, state);
 		}
 
-		system.setProperties(state, angle, lineLength);
+		system.setProperties(state, angle, lineLength, instantDraw);
 		system.draw(2);
 	}
 

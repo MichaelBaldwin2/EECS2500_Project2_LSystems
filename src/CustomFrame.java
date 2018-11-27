@@ -15,6 +15,8 @@ public class CustomFrame extends JFrame implements ActionListener {
 	private JTextArea rulesTextArea;
 	private JTextField iterationsTextField;
 	private JTextField angleTextField;
+	private JCheckBox instantDrawCheckBox;
+	private JSlider lineLengthSlider;
 
 	public CustomFrame() {
 		setTitle("EECS2500 - Project 2 - L Systems");
@@ -68,6 +70,16 @@ public class CustomFrame extends JFrame implements ActionListener {
 		angleTextField = new JTextField();
 		menuPanel.add(angleTextField, constraints);
 
+		//LINE LENGTH
+		menuPanel.add(new JLabel("Line Length"), constraints);
+		lineLengthSlider = new JSlider(1, 15);
+		menuPanel.add(lineLengthSlider, constraints);
+
+		//INSTANT DRAW
+		menuPanel.add(new JLabel("Instant Draw"), constraints);
+		instantDrawCheckBox = new JCheckBox();
+		menuPanel.add(instantDrawCheckBox, constraints);
+
 		//Draw Button
 		JButton drawButton = new JButton("Draw");
 		drawButton.addActionListener(this);
@@ -93,10 +105,9 @@ public class CustomFrame extends JFrame implements ActionListener {
 			String[] rules = rulesTextArea.getText().split("\\n");
 			int iterations = Integer.parseInt(iterationsTextField.getText());
 			int angle = Integer.parseInt(angleTextField.getText());
-
-			int startPosition = 1;
-			Project2.calculateLSystem(start, rules, iterations, angle, 5);
-
+			int lineLength = lineLengthSlider.getValue();
+			boolean instantDraw = instantDrawCheckBox.isSelected();
+			Project2.calculateLSystem(start, rules, iterations, angle, lineLength, instantDraw);
 		} catch (NumberFormatException exception) {
 			JOptionPane.showMessageDialog(canvasPanel, "Incorrect Input.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
