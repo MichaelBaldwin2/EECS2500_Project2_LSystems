@@ -4,7 +4,6 @@
 
 import java.awt.geom.Line2D;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 
 public class LSystem {
 	private static final int OFFSET = 10;
@@ -17,7 +16,6 @@ public class LSystem {
 	private String state;
 	private int angle;
 	private int lineLength;
-	private Thread drawingThread;
 
 	public LSystem(final CustomCanvas canvas) {
 		this.canvas = canvas;
@@ -57,47 +55,33 @@ public class LSystem {
 	 * @param delay Time between ticks.
 	 */
 	public final void draw(final int delay) {
-		if (drawingThread != null) {
-			try {
-				drawingThread.interrupt();
-				drawingThread.join();
-			} catch (InterruptedException e1) {
-				return;
-			}
-		}
+		canvas.clear();
 
-		drawingThread = new Thread(() -> {
-			try {
-				canvas.clear();
-
-				for (char item : state.toCharArray()) {
-					if (item == 'F' || item == 'G') {
-						double nextX = currentState.x + (lineLength * Math.sin(Math.toRadians(currentState.angle)));
-						double nextY = currentState.y + (lineLength * Math.cos(Math.toRadians(currentState.angle)));
-						canvas.addLine(new Line2D.Double(currentState.x, currentState.y, nextX, nextY));
-						currentState = new SystemState(nextX, nextY, currentState.angle);
-
-						TimeUnit.MILLISECONDS.sleep(delay);
-					} else if (item == '+') {
-						int nextAngle = currentState.angle + angle;
-						currentState = new SystemState(currentState.x, currentState.y, nextAngle);
-					} else if (item == '-') {
-						int nextAngle = currentState.angle - angle;
-						currentState = new SystemState(currentState.x, currentState.y, nextAngle);
-					} else if (item == '[') {
-						stack.push(currentState);
-					} else if (item == ']') {
-						if (!stack.isEmpty()) currentState = stack.pop();
-					}
-
-					canvas.draw();
+		for (char item : state.toCharArray()) {
+			if (item == 'F' || item == 'G') {
+				double nextX = currentState.x + (lineLength * Math.sin(Math.toRadians(currentState.angle)));
+				double nextY = currentState.y + (lineLength * Math.cos(Math.toRadians(currentState.angle)));
+				canvas.addLine(new Line2D.Double(currentState.x, currentState.y, nextX, nextY));
+				currentState = new SystemState(nextX, nextY, currentState.angle);
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				return;
+			} else if (item == '+') {
+				int nextAngle = currentState.angle + angle;
+				currentState = new SystemState(currentState.x, currentState.y, nextAngle);
+			} else if (item == '-') {
+				int nextAngle = currentState.angle - angle;
+				currentState = new SystemState(currentState.x, currentState.y, nextAngle);
+			} else if (item == '[') {
+				stack.push(currentState);
+			} else if (item == ']') {
+				if (!stack.isEmpty()) currentState = stack.pop();
 			}
-		});
 
-		drawingThread.start();
+			canvas.draw();
+		}
 	}
 
 	private final class SystemState {
