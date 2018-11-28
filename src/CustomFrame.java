@@ -89,17 +89,8 @@ public class CustomFrame extends JFrame implements ActionListener {
 		mainPanel.add(canvasPanel);
 	}
 
-	/**
-	 * Returns the canvas object.
-	 *
-	 * @return The canvas.
-	 */
-	public final CustomCanvas getCanvas() {
-		return canvasPanel;
-	}
-
 	@Override
-	public final void actionPerformed(final ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		try {
 			String start = startTextField.getText().replaceAll("\\s", "");
 			String[] rules = rulesTextArea.getText().split("\\n");
@@ -107,7 +98,7 @@ public class CustomFrame extends JFrame implements ActionListener {
 			int angle = Integer.parseInt(angleTextField.getText());
 			int lineLength = lineLengthSlider.getValue();
 			boolean instantDraw = instantDrawCheckBox.isSelected();
-			Project2.calculateLSystem(start, rules, iterations, angle, lineLength, instantDraw);
+			Project2.calculateLSystem(canvasPanel, start, rules, iterations, angle, lineLength, instantDraw);
 		} catch (NumberFormatException exception) {
 			JOptionPane.showMessageDialog(canvasPanel, "Incorrect Input.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

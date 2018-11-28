@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomCanvas extends JPanel {
-	private List<Line2D.Double> lines;
+	private List<Line2D.Double> lines = new ArrayList<>();
 
-	public final void addLine(final Line2D.Double line) {
+	public void addLine(Line2D.Double line) {
 		lines.add(line);
 	}
 
-	public final void draw() {
+	public void draw() {
 		Graphics2D gfx = (Graphics2D) getGraphics();
 
 		gfx.setColor(Color.blue);
@@ -23,7 +23,7 @@ public class CustomCanvas extends JPanel {
 			gfx.drawLine((int) Math.round(line.getX1()), (int) Math.round(line.getY1()), (int) Math.round(line.getX2()), (int) Math.round(line.getY2()));
 	}
 
-	public final void clear() {
+	public void clear() {
 		Graphics2D gfx = (Graphics2D) getGraphics();
 		lines.clear();
 
@@ -33,9 +33,8 @@ public class CustomCanvas extends JPanel {
 	}
 
 	@Override
-	public final void paintComponent(final Graphics graphics) {
+	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-
 		lines = new ArrayList<>();
 		draw();
 	}
