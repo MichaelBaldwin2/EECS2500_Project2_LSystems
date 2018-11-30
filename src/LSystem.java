@@ -1,12 +1,27 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.*;
+import java.util.*;
 
 public class LSystem {
+	private Queue<Character> ruleQueue;
 	private String expandedRules;
 
 	public LSystem(String startSymbol, String[] rules, int iterations) {
-		Map<Character, char[]> parsedRules = parseRules(rules);
+		//First we need to split each rule on the equals sign
+		Map<Character, String> parsedRules = new HashMap<>();
+		for (String iString : rules) {
+			String[] sides = iString.split("=");
+			parsedRules.put(sides[0].charAt(0), sides[1]);
+		}
+
+		ruleQueue = new PriorityQueue<>();
+		ruleQueue.add(startSymbol.charAt(0));
+		for(int i = 0; i < iterations; i++) {
+			for(int qIndex = ruleQueue.size() - 1; qIndex >= 0 ; qIndex--) {
+				Character iChar = ruleQueue.remove();
+			}
+		}
+
+		//Map<Character, char[]> parsedRules = parseRules(rules);
 		expandedRules = startSymbol;
 		for (int i = 0; i < iterations; i++) {
 			expandedRules = applyRules(parsedRules, expandedRules);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class CustomCanvas extends JPanel {
+public class CustomPanel extends JPanel {
 	private List<Line2D.Double> lines = new ArrayList<>();
 
 	public void draw(String expandedString, double angle, double lineLength, boolean instantDraw) {
