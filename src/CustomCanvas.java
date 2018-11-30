@@ -7,12 +7,48 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class CustomCanvas extends JPanel {
 	private List<Line2D.Double> lines = new ArrayList<>();
 
-	public void addLine(Line2D.Double line) {
-		lines.add(line);
+	public void draw(String expandedString, double angle, double lineLength, boolean instantDraw) {
+		clear();
+		LSystemState currentState = new LSystemState(200, 200, 90);
+		Stack<LSystemState> savedStateStack = new Stack<>();
+
+		for (char item : expandedString.toCharArray()) {
+			switch (item) {
+				case 'F': {
+					double nextX = currentState.getX() + (lineLength * Math.sin(Math.toRadians(currentState.getAngle())));
+					double nextY = currentState.getY() + (lineLength * Math.cos(Math.toRadians(currentState.getAngle())));
+					lines.add(new Line2D.Double(currentState.getX(), currentState.getY(), nextX, nextY));
+					currentState = new LSystemState(nextX, nextY, currentState.getAngle());
+				}
+				break;
+				case '+': {
+					double nextAngle = currentState.getAngle() + angle;
+					currentState = new LSystemState(currentState.getX(), currentState.getY(), nextAngle);
+				}
+				break;
+				case '-': {
+					double nextAngle = currentState.getAngle() - angle;
+					currentState = new LSystemState(currentState.getX(), currentState.getY(), nextAngle);
+				}
+				break;
+				case '[':
+					savedStateStack.push(currentState);
+					break;
+				case ']':
+					if (!savedStateStack.isEmpty())
+						currentState = savedStateStack.pop();
+					break;
+			}
+
+			if (!instantDraw)
+				draw();
+		}
+		draw();
 	}
 
 	public void draw() {
