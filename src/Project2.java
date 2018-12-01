@@ -9,19 +9,45 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+	IMPORTANT INFO:
+		I don't separate the rules by boxes, instead I separate them by equal signs and by new lines.
+		So each rule should have a single character on the LHS of the equal sign, and then whatever you want on the RHS.
+		When you want to add more than one rule, you MUST use the enter/return key to add a new line and then you can write the new rule.
+		The reason I do this is to allow more than 5 rules to be written. I know the requirements only call for 5, but I like to live dangerously :)
+
+		---------------------------------------------------
+		Ex:
+			Start Symbol: F
+
+			Rules:
+					F=F+G+F+G
+					G=F+F
+
+		---------------------------------------------------
+ */
+
+/**
+ * Project 2 class. Sets up the GUI and performs actions on button presses.
+ */
 public class Project2 extends JFrame implements ActionListener {
 	private CustomPanel drawPanel;
 	private JTextField startTextField;
 	private JTextArea rulesTextArea;
 	private JTextField iterationsTextField;
 	private JTextField angleTextField;
-	private JCheckBox instantDrawCheckBox;
 	private JSlider lineLengthSlider;
 
+	/**
+	 * Main method, nuff said.
+	 */
 	public static void main(final String[] args) {
 		new Project2();
 	}
 
+	/**
+	 * Constructor. Private because it's only ever used within this class itself.
+	 */
 	private Project2() {
 		setTitle("EECS2500 - Project 2 - L Systems");
 		initUI();
@@ -32,6 +58,9 @@ public class Project2 extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
+	/**
+	 * Sets up the GUI.
+	 */
 	private void initUI() {
 		//Construct the main drawPanel that encompasses all
 		JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -79,11 +108,6 @@ public class Project2 extends JFrame implements ActionListener {
 		lineLengthSlider = new JSlider(1, 15);
 		menuPanel.add(lineLengthSlider, constraints);
 
-		//INSTANT DRAW
-		menuPanel.add(new JLabel("Instant Draw"), constraints);
-		instantDrawCheckBox = new JCheckBox();
-		menuPanel.add(instantDrawCheckBox, constraints);
-
 		//Draw Button
 		JButton drawButton = new JButton("Draw");
 		drawButton.addActionListener(this);
@@ -97,14 +121,11 @@ public class Project2 extends JFrame implements ActionListener {
 	public void actionPerformed(final ActionEvent event) {
 		try {
 			String startSymbol = startTextField.getText().trim();
-			if(startSymbol.length() != 1)
-				throw new Exception("Start Symbol length is not equal to 1!");
 			String[] rules = rulesTextArea.getText().split("\n");
 			int iterations = Integer.parseInt(iterationsTextField.getText());
 			int angle = Integer.parseInt(angleTextField.getText());
 			int lineLength = lineLengthSlider.getValue();
-			boolean instantDraw = instantDrawCheckBox.isSelected();
-			drawPanel.draw(new LSystem(startSymbol, rules, iterations).toString(), angle, lineLength, instantDraw);
+			drawPanel.draw(new LSystem(startSymbol, rules, iterations).toString(), angle, lineLength);
 		} catch (Exception exception) {
 			JOptionPane.showMessageDialog(drawPanel, "Incorrect Input." + exception, "Error", JOptionPane.ERROR_MESSAGE);
 		}

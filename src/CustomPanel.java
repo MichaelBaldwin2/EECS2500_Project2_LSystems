@@ -9,21 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * All this class does is perform the drawing of the lines and the LSystemState record within a stack.
+ */
 public class CustomPanel extends JPanel {
 	private List<Line2D.Double> lines = new ArrayList<>();
 
-	public void draw(String expandedString, double angle, double lineLength, boolean instantDraw) {
-		clear();
-		LSystemState currentState = new LSystemState(200, 200, 90);
+	/**
+	 * This method will draw the expanded rules onto the panel screen.
+	 *
+	 * @param expandedString The expanded string to parse and draw.
+	 * @param angle          The angle delta to apply each time an angle change is requested.
+	 * @param lineLength     The length of the line.
+	 */
+	public void draw(String expandedString, double angle, double lineLength) {
+		LSystemState currentState = new LSystemState(getWidth() / 2d, getHeight() / 2d, 180);
 		Stack<LSystemState> savedStateStack = new Stack<>();
 
+		//First we clear the panel of old lines
+		Graphics2D gfx = (Graphics2D) getGraphics();
+		gfx.setColor(Color.white);
+		gfx.clearRect(1, 1, getWidth() - 2, getHeight() - 2);
+		gfx.fillRect(2, 2, getWidth() - 3, getHeight() - 3);
+
+		//Now we loop through the expanded string, performing whatever operations are there, skipping any non-required ops.
 		for (char item : expandedString.toCharArray()) {
 			switch (item) {
 				case 'F': {
 					double nextX = currentState.getX() + (lineLength * Math.sin(Math.toRadians(currentState.getAngle())));
 					double nextY = currentState.getY() + (lineLength * Math.cos(Math.toRadians(currentState.getAngle())));
-					lines.add(new Line2D.Double(currentState.getX(), currentState.getY(), nextX, nextY));
+					Line2D.Double line = new Line2D.Double(currentState.getX(), currentState.getY(), nextX, nextY);
 					currentState = new LSystemState(nextX, nextY, currentState.getAngle());
+					gfx.setColor(Color.black);
+					gfx.drawLine((int) line.getX1(), (int) line.getY1(), (int) line.getX2(), (int) line.getY2());
 				}
 				break;
 				case '+': {
@@ -44,34 +62,6 @@ public class CustomPanel extends JPanel {
 						currentState = savedStateStack.pop();
 					break;
 			}
-
-			if (!instantDraw)
-				draw();
 		}
-		draw();
-	}
-
-	public void draw() {
-		Graphics2D gfx = (Graphics2D) getGraphics();
-
-		gfx.setColor(Color.blue);
-		for (Line2D.Double line : lines)
-			gfx.drawLine((int) Math.round(line.getX1()), (int) Math.round(line.getY1()), (int) Math.round(line.getX2()), (int) Math.round(line.getY2()));
-	}
-
-	public void clear() {
-		Graphics2D gfx = (Graphics2D) getGraphics();
-		lines.clear();
-
-		gfx.setColor(Color.white);
-		gfx.clearRect(1, 1, getWidth() - 2, getHeight() - 2);
-		gfx.fillRect(2, 2, getWidth() - 3, getHeight() - 3);
-	}
-
-	@Override
-	public void paintComponent(Graphics graphics) {
-		super.paintComponent(graphics);
-		lines = new ArrayList<>();
-		draw();
 	}
 }
